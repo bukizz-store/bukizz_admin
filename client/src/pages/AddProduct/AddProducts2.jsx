@@ -79,11 +79,9 @@ function AddProduct({}) {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    if (name === "Image") {
-      setFormData((prevData) => ({ ...prevData, [name]: e.target.files[0] }));
-    } else {
+    
       setFormData((prevData) => ({ ...prevData, [name]: value }));
-    }
+    
     console.log(formData);
   };
   const handleSubmit = async () => {
@@ -104,7 +102,7 @@ function AddProduct({}) {
 
     try {
       // Make API call to add the product
-      const resp = await fetchApi2("/v1/admin/addproduct", formData);
+      const resp = await fetchApi2("/v1/admin/addproduct2", formData);
       if (resp.success) {
         // Product added successfully
         console.log("Product added successfully:", resp.data);
@@ -781,26 +779,27 @@ const VariationDataInput =( {value,onChange=()=>{}})=>{
             placeholder="Enter cost Per Item"
             className="font-medium md:h-auto p-0 placeholder:text-blue_gray-300 sm:h-auto text-base text-left w-full"
             wrapClassName="border border-blue_gray-100 border-solid mt-1 rounded-lg w-60"
-            type="text"
-            value={value.costPerItem.toString() || "0.0"}
+            type="number"
+            isFloat={true}
+            value={value.costPerItem || 0.0}
             onChange={(e) => {
-              const floatValue = parseInt(e.target.value, 10) + 0.01;
-              if (!isNaN(floatValue)) {
-                handleInputChange("costPerItem", floatValue);
-              } else {
-                handleInputChange("costPerItem", 0.0); 
-              }
+              // const floatValue = parseInt(e.target.value, 10) + 0.01;
+              // if (!isNaN(floatValue)) {
+                handleInputChange("costPerItem", e.target.value);
+              // } else {
+              //   handleInputChange("costPerItem", 0.0);
+              // }
             }}
           />
           <ImageUpload
-            name="image"
+            name="images"
             placeholder="Enter image"
             className="font-medium md:h-auto p-0 placeholder:text-blue_gray-300 sm:h-auto text-base text-left w-60"
             wrapClassName="border border-blue_gray-100 border-solid mt-1 rounded-lg w-full"
             type="file"
             allowMultiple={true}
             value={value.images || []}
-            onChange={(e) => handleInputChange("images", e.target.files)}
+            onChange={(e) => handleInputChange("images", e.target.value)}
             uploadPath={`product_image/variation/`}
           />
         </div>

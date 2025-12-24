@@ -32,6 +32,7 @@ const Input = React.forwardRef(
       prefix,
       suffix,
       onChange,
+      isFloat = false,
       shape = "",
       size = "sm",
       variant = "fill",
@@ -43,9 +44,15 @@ const Input = React.forwardRef(
     const handleChange = (e) => {
       if (onChange) {
         if (type == "number") {
-          onChange({
-            target: { name, value: parseInt(e.target.value, 10) },
-          });
+          if (isFloat) {
+            onChange({
+              target: { name, value: parseFloat(e.target.value) },
+            });
+          } else {
+            onChange({
+              target: { name, value: parseInt(e.target.value, 10) },
+            });
+          }
         } else {
           onChange(e);
         }

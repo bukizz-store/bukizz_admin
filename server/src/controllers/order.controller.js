@@ -11,6 +11,7 @@ import {
   updateDoc,
   orderBy,
   getDoc,
+  and,
 } from "firebase/firestore";
 import { notification } from "../utils/notifications.js";
 
@@ -22,8 +23,26 @@ const order = asyncHandler(async (req, res) => {
     const startAt = (page - 1) * pageSize;
     const endAt = startAt + pageSize;
 
+    const city = req.query.city || null;
+    const status = req.query.status || null;
+    const retailerId = req.query.retailerId || null;
+    
+    console.log("city",city, "status :", status,"retailerId : ", retailerId);
+   let q = query(
+     collection(app, "orderDetails"),
+    //  and(
+      ...(city ? [where("address.city", "==", city)] : []),
+     ...(status ? [where("status", "==", status)] : []),
+     ...(retailerId ? [where("retailerId", "==", retailerId)] : []),
+    //  ),
+     orderBy("orderDate", "desc")
+   );
+
+
+   console.log("q", q);
+
     const snapshot = await getDocs(
-      query(collection(app, "orderDetails"), orderBy("orderDate", "desc"))
+      q
     );
 
     const totalItems = snapshot.docs.length;
