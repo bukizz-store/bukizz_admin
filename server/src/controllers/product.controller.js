@@ -36,10 +36,12 @@ const product = asyncHandler(async (req, res) => {
 
     const startAt = (page - 1) * pageSize;
     const endAt = startAt + pageSize;
+    const city = req.query.city || null;
 
     const snapshot = await getDocs(
       query(
-        collection(app, "products")
+        collection(app, "products"),
+        ...(city ? [where("city", "array-contains", city)] : [])
         //  orderBy("yourOrderByField")
       )
     );

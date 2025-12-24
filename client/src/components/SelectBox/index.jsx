@@ -27,7 +27,9 @@ const SelectBox = React.forwardRef(
     },
     ref,
   ) => {
-    const [selectedVal, setSelectedVal] = React.useState(null);
+    const selectOptions = [{ label: "--select--", value: "" }, ...options];
+    // console.log("options : ", options,"selectOptions : ", selectOptions);
+    const [selectedVal, setSelectedVal] = React.useState(selectOptions.find((o) => o.value === value) || null);
 
     const handleChange = (data) => {
       setSelectedVal(data);
@@ -39,13 +41,13 @@ const SelectBox = React.forwardRef(
     };
 
     useEffect(() => {
-      console.log("selectedval : ", selectedVal);
+      // console.log("selectedval : ", selectedVal);
     }, [selectedVal]);
 
-    const selectOptions = [
-      { label: "--select--", value: "" },
-      ...options,
-    ];
+    useEffect(()=>{
+      setSelectedVal(selectOptions.find((o) => o.value === value) || null);
+    
+    },[])
 
     return (
       <>

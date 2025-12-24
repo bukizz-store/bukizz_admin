@@ -42,3 +42,31 @@ const findallkeys = (obj) => {
 }
 
 console.log(findallkeys(variation['set-bookset_notebookset'])); 
+
+var selectedData={
+    image:
+    
+}      
+
+
+const comp = (variation,onchange ,value) => {
+    
+    var name = "set-bookset_notebookset";
+    var keys= [];
+    var selectedKey = name;
+    const func = (obj) => {
+        selectedKey=obj;
+        onchange({name:selectedKey});
+    }
+
+    // return {
+    //     <div>
+    //         choose {name}
+    //         {keys.map((key) => {
+    //             return <button onClick={func(key)} isSelected= {name==key}>{key}</button>
+    //         })}
+
+    //         <comp variation = {variation[selectedKey]} onchange = {onchange}/>
+    //     </div>
+    // }
+}   

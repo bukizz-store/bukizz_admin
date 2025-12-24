@@ -18,6 +18,7 @@ import {
   getProductDetails,
   generalProductAdd,
 } from "../controllers/product.controller.js";
+
 import {
   ImageUPloader,
   imageDelete,
@@ -25,6 +26,7 @@ import {
 import { getUserDetails } from "../controllers/user.controller.js";
 import { notification } from "../controllers/notification.controllers.js";
 import { getRetailer } from "../controllers/retailer.controller.js";
+import { productAdd2 } from "../controllers/product2.controller.js";
 
 const router = Router();
 router.route("/category").post(category);
@@ -37,6 +39,8 @@ router.route("/product").post(product);
 router.route("/product/categoryId").post(productByCategoryId);
 router.route("/product/c/:productId").post(productByproductId);
 router.route("/addproduct").post(productAdd);
+router.route("/addproduct2").post(productAdd2);
+
 router.route("/addgeneralproduct").post(generalProductAdd);
 
 router.route("/generalPoducts").post(general_products);

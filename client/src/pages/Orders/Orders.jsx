@@ -17,23 +17,34 @@ function Orders() {
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
+  const [city, setCity] = useState("");
+  const [status, setStatus] = useState("");
+  const [retailerId, setRetailerId] = useState("");
   const [totalPages, setTotalPage] = useState(0);
   const handleSort = () => {};
+  
 
   useEffect(() => {
     if (!showAddSchoolsForm) {
       getData();
     }
-  }, [showAddSchoolsForm, limit, page]);
+  }, [showAddSchoolsForm, limit, page,city,status,retailerId]);
 
   const getData = async () => {
     try {
-      const query = `page=${page}&limit=${limit}`;
+      const query = `page=${page}&limit=${limit}&city=${city}&status=${status}&retailerId=${retailerId}`;
+      // const query = `page=${page}&limit=${limit}`;
       const resp = await fetchApi(`/v1/admin/orders?${query}`);
       console.log(resp);
-      if (resp.success) {
+      if (resp.success ) {
         setTotalPage(resp.totalPages);
-        setOrdersData(resp.data);
+        if( resp.message === "Data sent successfully"){
+
+          setOrdersData(resp.data);
+        }
+        else {
+          setOrdersData([]);
+        }
         // Toast.fire({
         //     icon: "success",
         //     title: "Data fetched successfully",
@@ -82,6 +93,7 @@ function Orders() {
               setQuery={setQuery}
               query={query}
               placeholder="Type something to search"
+              setCityOpt={setCity}
               handleSort={handleSort}
             />
             <TableViewer
@@ -98,14 +110,18 @@ function Orders() {
               ]}
               loading={loading}
             >
-              <Row
-                data={ordersData}
-                setSingleSchool={setOrdersData}
-                setShowAddSchoolForm={setShowAddSchoolForm}
-                page={page}
-                limit={limit}
-                //   fetchData={fetchData}
-              />
+              {(ordersData != {}) ?(
+                <Row
+                  data={ordersData}
+                  setSingleSchool={setOrdersData}
+                  setShowAddSchoolForm={setShowAddSchoolForm}
+                  page={page}
+                  limit={limit}
+                  //   fetchData={fetchData}
+                />
+              ):(
+                <></>)}
+
             </TableViewer>
             <Pagination
               page={page}
@@ -135,6 +151,7 @@ const Row = ({
     setSingleSchool(el);
     setShowAddSchoolForm(true);
   };
+  console.log("data", data);
 
   const getDate = (timestamp) => {
     const date = new Date(timestamp);
@@ -149,7 +166,7 @@ const Row = ({
   };
   return (
     <>
-      {data.map((el, index) => (
+      { data.map((el, index) => (
         <tr
           key={index}
           onClick={() => {

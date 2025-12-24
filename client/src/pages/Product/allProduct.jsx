@@ -17,18 +17,19 @@ function AllProduct() {
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
+  const [city, setCity] = useState("");
   const [totalPages, setTotalPage] = useState(0);
   const handleSort = () => {};
 
-  useEffect(() => { 
+  useEffect(() => {
     if (!showAddSchoolsForm) {
       getData();
     }
-  }, [showAddSchoolsForm, limit, page]);
+  }, [showAddSchoolsForm, limit, page, city]);
 
   const getData = async () => {
     try {
-      const query = `page=${page}&limit=${limit}`;
+      const query = `page=${page}&limit=${limit}&city=${city}`;
       const resp = await fetchApi(`/v1/admin/product?${query}`);
       console.log(resp);
       if (resp.success) {
@@ -82,6 +83,7 @@ function AllProduct() {
               setQuery={setQuery}
               query={query}
               placeholder="Type something to search"
+              setCityOpt={setCity}
               handleSort={handleSort}
             />
             <TableViewer
@@ -94,7 +96,6 @@ function AllProduct() {
                 "Board",
                 "City",
                 "Delivery Charge",
-                
               ]}
               loading={loading}
             >
